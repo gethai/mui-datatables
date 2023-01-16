@@ -1,7 +1,13 @@
 {
-  "name": "mui-datatables",
-  "version": "4.2.2",
-  "description": "Datatables for React using Material-UI",
+  "name": "@gethai/mui-datatables",
+  "version": "1.0.0",
+  "description": "Official React wrapper for Datatables using Material-UI",
+  "homepage": "https://github.com/gregnb/mui-datatables#readme",
+  "repository":"https://github.com/gethai/shared",
+  "publishConfig": {
+    "registry":"https://npm.pkg.github.com"
+  },
+  "private": false,
   "main": "dist/index.js",
   "files": [
     "dist"
@@ -21,21 +27,6 @@
     "build": "cross-env NODE_ENV=production npm run prettier && rollup -c",
     "prepare": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/gregnb/mui-datatables.git"
-  },
-  "keywords": [
-    "material-ui",
-    "datatables",
-    "react"
-  ],
-  "author": "gregnb <gregnb@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/gregnb/mui-datatables/issues"
-  },
-  "homepage": "https://github.com/gregnb/mui-datatables#readme",
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "@babel/plugin-external-helpers": "^7.10.1",

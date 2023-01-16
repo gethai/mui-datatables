@@ -7,20 +7,19 @@ import { withStyles } from 'tss-react/mui';
 const defaultBodyRowStyles = theme => ({
   root: {
     // material v4
-    '&.Mui-selected': {
-      backgroundColor: theme.palette.action.selected,
-    },
-
-    // material v3 workaround
-    '&.mui-row-selected': {
-      backgroundColor: theme.palette.action.selected,
-    },
+    // '&.Mui-selected': {
+    //   backgroundColor: theme.palette.action.selected,
+    // },
+    // // material v3 workaround
+    // '&.mui-row-selected': {
+    //   backgroundColor: theme.palette.action.selected,
+    // },
   },
   hoverCursor: { cursor: 'pointer' },
   responsiveStacked: {
     [theme.breakpoints.down('md')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
-      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      // borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
       padding: 0,
       margin: 0,
     },
@@ -28,7 +27,7 @@ const defaultBodyRowStyles = theme => ({
   responsiveSimple: {
     [theme.breakpoints.down('sm')]: {
       borderTop: 'solid 2px rgba(0, 0, 0, 0.15)',
-      borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
+      // borderBottom: 'solid 2px rgba(0, 0, 0, 0.15)',
       padding: 0,
       margin: 0,
     },

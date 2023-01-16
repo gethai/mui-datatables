@@ -10,14 +10,24 @@ const useStyles = makeStyles({ name: 'MUIDataTableSearch' })(theme => ({
   main: {
     display: 'flex',
     flex: '1 0 auto',
-    alignItems: 'center',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   },
   searchIcon: {
     color: theme.palette.text.secondary,
     marginRight: '8px',
   },
   searchText: {
-    flex: '0.8 0',
+    flex: '0.4 0',
+    [theme.breakpoints.down('sm')]: {
+      flex: '0.8 0',
+    },
+    [theme.breakpoints.up('md')]: {
+      flex: '0.4 0',
+    },
+    [theme.breakpoints.up('lg')]: {
+      flex: '0.3 0',
+    },
   },
   clearIcon: {
     '&:hover': {
@@ -54,6 +64,7 @@ const TableSearch = ({ options, searchText, onSearch, onHide }) => {
           }}
           inputProps={{
             'aria-label': options.textLabels.toolbar.search,
+            maxLength: options.searchProps?.maxLength,
           }}
           value={searchText || ''}
           onKeyDown={onKeyDown}

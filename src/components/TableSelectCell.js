@@ -40,6 +40,10 @@ const useStyles = makeStyles({ name: 'MUIDataTableSelectCell' })(theme => ({
   checkboxRoot: {},
   checked: {},
   disabled: {},
+  expandIconStyle: {
+    verticalAlign: 'bottom',
+    paddingBottom: '1rem',
+  },
 }));
 
 const TableSelectCell = ({
@@ -60,6 +64,7 @@ const TableSelectCell = ({
   setHeadCellRef,
   dataIndex,
   components = {},
+  haiHideExpandButton,
   ...otherProps
 }) => {
   const { classes } = useStyles();
@@ -75,6 +80,7 @@ const TableSelectCell = ({
     [classes.fixedHeader]: fixedHeader && isHeaderCell,
     [classes.fixedLeft]: fixedSelectColumn,
     [classes.headerCell]: isHeaderCell,
+    [classes.expandIconStyle]: otherProps.responsive === 'vertical' ? true : false,
   });
 
   const buttonClass = clsx({
@@ -119,10 +125,17 @@ const TableSelectCell = ({
     );
   };
 
+  const isExpand = isRowExpanded || (isHeaderCell && areAllRowsExpanded());
   return (
-    <TableCell className={cellClass} padding="checkbox" {...refProp}>
+    <TableCell
+      className={cellClass}
+      padding="checkbox"
+      {...refProp}
+      style={{
+        borderBottom: isExpand && otherProps.responsive === 'standard' ? 'none' : '',
+      }}>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        {expandableOn && (
+        {haiHideExpandButton && expandableOn && (
           <ExpandButtonComponent
             isHeaderCell={isHeaderCell}
             areAllRowsExpanded={areAllRowsExpanded}
@@ -158,6 +171,8 @@ TableSelectCell.propTypes = {
   selectableOn: PropTypes.string,
   /** Select cell disabled on/off */
   isRowSelectable: PropTypes.bool,
+  /**Hai Expandable- Is expandable icon visible */
+  haiHideExpandButton: PropTypes.bool,
 };
 
 export default TableSelectCell;

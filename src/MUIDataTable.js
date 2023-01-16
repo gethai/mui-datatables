@@ -199,6 +199,7 @@ class MUIDataTable extends React.Component {
       fixedSelectColumn: PropTypes.bool,
       getTextLabels: PropTypes.func,
       isRowExpandable: PropTypes.func,
+      isRowExpandIconVisible: PropTypes.func,
       isRowSelectable: PropTypes.func,
       jumpToPage: PropTypes.bool,
       onDownload: PropTypes.func,
@@ -978,6 +979,8 @@ class MUIDataTable extends React.Component {
           columnValue,
           tableMeta,
           this.updateDataCol.bind(null, rowIndex, index),
+          this.toggleExpandRow,
+          this.isRowExpand,
         );
         columnDisplay = funcResult;
 
@@ -1604,6 +1607,15 @@ class MUIDataTable extends React.Component {
         }
       },
     );
+  };
+
+  isRowExpanded = dataIndex => {
+    const expandedRow = this.state.expandedRows;
+    return expandedRow && expandedRow.lookup[dataIndex] ? true : false;
+  };
+
+  isRowExpand = dataIndex => {
+    return this.isRowExpanded(dataIndex) || this.areAllRowsExpanded();
   };
 
   selectRowUpdate = (type, value, shiftAdjacentRows = []) => {
