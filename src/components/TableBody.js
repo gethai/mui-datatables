@@ -127,6 +127,15 @@ class TableBody extends React.Component {
     }
   }
 
+  isRowExpandIconVisible(dataIndex, processedRow) {
+    const { options, expandedRows } = this.props;
+    if (options.isRowExpandIconVisible) {
+      return options.isRowExpandIconVisible(dataIndex, expandedRows);
+    } else {
+      return true;
+    }
+  }
+
   handleRowSelect = (data, event) => {
     let shiftKey = event && event.nativeEvent ? event.nativeEvent.shiftKey : false;
     let shiftAdjacentRows = [];
@@ -268,30 +277,35 @@ class TableBody extends React.Component {
                   })}
                   data-testid={'MUIDataTableBodyRow-' + dataIndex}
                   id={`MUIDataTableBodyRow-${tableId}-${dataIndex}`}>
-                  <TableSelectCell
-                    onChange={this.handleRowSelect.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
-                    onExpand={toggleExpandRow.bind(null, {
-                      index: this.getRowIndex(rowIndex),
-                      dataIndex: dataIndex,
-                    })}
-                    fixedHeader={options.fixedHeader}
-                    fixedSelectColumn={options.fixedSelectColumn}
-                    checked={isRowSelected}
-                    expandableOn={options.expandableRows}
-                    // When rows are expandable, but this particular row isn't expandable, set this to true.
-                    // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
-                    hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
-                    selectableOn={options.selectableRows}
-                    selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
-                    isRowExpanded={this.isRowExpanded(dataIndex)}
-                    isRowSelectable={isRowSelectable}
-                    dataIndex={dataIndex}
-                    id={`MUIDataTableSelectCell-${tableId}-${dataIndex}`}
-                    components={components}
-                  />
+                  {options.responsive === 'standard' && (
+                    <TableSelectCell
+                      onChange={this.handleRowSelect.bind(null, {
+                        index: this.getRowIndex(rowIndex),
+                        dataIndex: dataIndex,
+                      })}
+                      onExpand={toggleExpandRow.bind(null, {
+                        index: this.getRowIndex(rowIndex),
+                        dataIndex: dataIndex,
+                      })}
+                      fixedHeader={options.fixedHeader}
+                      fixedSelectColumn={options.fixedSelectColumn}
+                      checked={isRowSelected}
+                      expandableOn={options.expandableRows}
+                      // When rows are expandable, but this particular row isn't expandable, set this to true.
+                      // This will add a new class to the toggle button, MUIDataTableSelectCell-expandDisabled.
+                      hideExpandButton={!this.isRowExpandable(dataIndex) && options.expandableRows}
+                      haiHideExpandButton={this.isRowExpandIconVisible(dataIndex, processedRow)}
+                      selectableOn={options.selectableRows}
+                      selectableRowsHideCheckboxes={options.selectableRowsHideCheckboxes}
+                      isRowExpanded={this.isRowExpanded(dataIndex)}
+                      isRowSelectable={isRowSelectable}
+                      dataIndex={dataIndex}
+                      id={`MUIDataTableSelectCell-${tableId}-${dataIndex}`}
+                      components={components}
+                      responsive={options.responsive}
+                    />
+                  )}
+
                   {processedRow.map(
                     column =>
                       columns[column.index].display === 'true' && (
@@ -307,7 +321,8 @@ class TableBody extends React.Component {
                           print={columns[column.index].print}
                           options={options}
                           tableId={tableId}
-                          key={column.index}>
+                          key={column.index}
+                          isRowExpanded={this.isRowExpanded(dataIndex)}>
                           {column.value}
                         </TableBodyCell>
                       ),

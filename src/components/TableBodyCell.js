@@ -102,6 +102,7 @@ function TableBodyCell(props) {
     className,
     print,
     tableId,
+    isRowExpanded,
     ...otherProps
   } = props;
   const onCellClick = options.onCellClick;
@@ -141,11 +142,13 @@ function TableBodyCell(props) {
           'datatables-noprint': !print,
         },
         className,
-      )}>
+      )}
+      style={{ display: columnHeader === '' ? 'none' : '' }}>
       {columnHeader}
     </div>,
     <div
       key={2}
+      style={{ width: options.responsive === 'vertical' ? (columnHeader === '' ? '100%' : '') : '' }}
       className={clsx(
         {
           [classes.root]: true,
@@ -176,9 +179,51 @@ function TableBodyCell(props) {
     innerCells = cells;
   }
 
+  if (!columnHeader && options.responsive !== 'standard') {
+    if (!children) return null;
+
+    if (children) {
+      if (!children?.props?.children) {
+        return null;
+      }
+    }
+  }
+
+  if (columnHeader && options.responsive !== 'standard') {
+    if (children && children?.props?.children) {
+      const child = children?.props?.children;
+      const childProps = child?.props?.children;
+      if (childProps) {
+        const val = childProps?.toString().split('||');
+        if (val[0] === 'KEY' && val[1] === 'REMOVED') {
+          return null;
+        }
+      }
+    }
+  }
+
+  if (!columnHeader && options.responsive !== 'standard') {
+    if (children && children?.props?.children) {
+      const child = children?.props?.children;
+      if (Array.isArray(child)) {
+        const childObj = child.find(item => item?.props);
+        const childProps = childObj?.props?.children;
+        if (childProps) {
+          const val = childProps?.toString().split('||');
+          if (val[0] === 'KEY' && val[1] === 'REMOVED') {
+            return null;
+          }
+        }
+      }
+    }
+  }
+
   return (
     <TableCell
       {...methods}
+      style={{
+        borderBottom: isRowExpanded && options.responsive === 'standard' ? 'none' : '',
+      }}
       data-colindex={colIndex}
       data-tableid={tableId}
       className={clsx(

@@ -31,8 +31,9 @@ export const defaultToolbarStyles = theme => ({
     flex: '1 1 auto',
   },
   actions: {
-    flex: '1 1 auto',
-    textAlign: 'right',
+    // flex: '1 1 auto',
+    // textAlign: 'right',
+    display: 'flex',
   },
   fullWidthActions: {
     flex: '1 1 auto',
@@ -49,7 +50,7 @@ export const defaultToolbarStyles = theme => ({
     },
   },
   iconActive: {
-    color: theme.palette.primary.main,
+    // color: theme.palette.primary.main,
   },
   filterPaper: {
     maxWidth: '50%',
@@ -84,7 +85,6 @@ export const defaultToolbarStyles = theme => ({
   },
   [theme.breakpoints.down('sm')]: {
     root: {
-      display: 'block',
       '@media print': {
         display: 'none !important',
       },
@@ -352,20 +352,22 @@ class TableToolbar extends React.Component {
             </div>
           )}
         </div>
-        <div className={options.responsive !== RESPONSIVE_FULL_WIDTH_NAME ? classes.actions : classes.fullWidthActions}>
-          {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
-            <Tooltip title={search} disableFocusListener>
-              <IconButton
-                aria-label={search}
-                data-testid={search + '-iconButton'}
-                ref={el => (this.searchButton = el)}
-                classes={{ root: this.getActiveIcon(classes, 'search') }}
-                disabled={options.search === 'disabled'}
-                onClick={this.handleSearchIconClick}>
-                <SearchIconComponent />
-              </IconButton>
-            </Tooltip>
-          )}
+        <div className={classes.actions}>
+          <div>
+            {!(options.search === false || options.search === 'false' || options.searchAlwaysOpen === true) && (
+              <Tooltip title={search} disableFocusListener>
+                <IconButton
+                  aria-label={search}
+                  data-testid={search + '-iconButton'}
+                  ref={el => (this.searchButton = el)}
+                  classes={{ root: this.getActiveIcon(classes, 'search') }}
+                  disabled={options.search === 'disabled'}
+                  onClick={this.handleSearchIconClick}>
+                  <SearchIconComponent />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
           {!(options.download === false || options.download === 'false') && (
             <Tooltip title={downloadCsv}>
               <IconButton
@@ -429,39 +431,41 @@ class TableToolbar extends React.Component {
               }
             />
           )}
-          {!(options.filter === false || options.filter === 'false') && (
-            <Popover
-              refExit={filterPopoverExit}
-              hide={this.state.hideFilterPopover || options.filter === 'disabled'}
-              classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
-              trigger={
-                <Tooltip title={filterTable} disableFocusListener>
-                  <IconButton
-                    data-testid={filterTable + '-iconButton'}
-                    aria-label={filterTable}
-                    classes={{ root: this.getActiveIcon(classes, 'filter') }}
-                    disabled={options.filter === 'disabled'}
-                    onClick={this.setActiveIcon.bind(null, 'filter')}>
-                    <FilterIconComponent />
-                  </IconButton>
-                </Tooltip>
-              }
-              content={
-                <TableFilterComponent
-                  customFooter={options.customFilterDialogFooter}
-                  columns={columns}
-                  options={options}
-                  filterList={filterList}
-                  filterData={filterData}
-                  onFilterUpdate={filterUpdate}
-                  onFilterReset={resetFilters}
-                  handleClose={closeFilterPopover}
-                  updateFilterByType={updateFilterByType}
-                  components={components}
-                />
-              }
-            />
-          )}
+          <div>
+            {!(options.filter === false || options.filter === 'false') && (
+              <Popover
+                refExit={filterPopoverExit}
+                hide={this.state.hideFilterPopover || options.filter === 'disabled'}
+                classes={{ paper: classes.filterPaper, closeIcon: classes.filterCloseIcon }}
+                trigger={
+                  <Tooltip title={filterTable} disableFocusListener>
+                    <IconButton
+                      data-testid={filterTable + '-iconButton'}
+                      aria-label={filterTable}
+                      classes={{ root: this.getActiveIcon(classes, 'filter') }}
+                      disabled={options.filter === 'disabled'}
+                      onClick={this.setActiveIcon.bind(null, 'filter')}>
+                      <FilterIconComponent />
+                    </IconButton>
+                  </Tooltip>
+                }
+                content={
+                  <TableFilterComponent
+                    customFooter={options.customFilterDialogFooter}
+                    columns={columns}
+                    options={options}
+                    filterList={filterList}
+                    filterData={filterData}
+                    onFilterUpdate={filterUpdate}
+                    onFilterReset={resetFilters}
+                    handleClose={closeFilterPopover}
+                    updateFilterByType={updateFilterByType}
+                    components={components}
+                  />
+                }
+              />
+            )}
+          </div>
           {options.customToolbar && options.customToolbar({ displayData: this.props.displayData })}
         </div>
       </Toolbar>
